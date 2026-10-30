@@ -1,0 +1,141 @@
+/* MiniDock English UI strings (base language: zh-Hans) */
+
+/* Toolbar */
+"固定到 Dock" = "Pin to Dock";
+"设置" = "Settings";
+"添加 App" = "Add Apps";
+"在 Finder 中显示" = "Reveal in Finder";
+"封面与弹窗" = "Cover & Popup";
+"封面与弹窗样式，实时预览" = "Cover and popup styles with live preview";
+"打开 ~/Applications/MiniDock 文件夹，可将分类拖入 Dock" = "Open the MiniDock folder; drag a category onto the Dock";
+"把当前分类文件夹固定到 Dock 栏（会重启 Dock）" = "Pin this category folder to the Dock (Dock restarts briefly)";
+
+/* Sidebar / empty state */
+"新建分类" = "New Category";
+"先新建一个分类" = "Create a category first";
+"在左侧选择一个分类" = "Select a category on the left";
+
+/* Detail */
+"未找到 · 点击修复" = "Missing · click to fix";
+"%lld 个应用未找到，点击红色图标修复" = "%lld apps missing — click a red icon to fix";
+"重命名…" = "Rename…";
+"删除…" = "Delete…";
+
+/* Sheets: category name */
+"创建" = "Create";
+"重命名分类" = "Rename Category";
+"分类名称（例如：效率办公）" = "Category name (e.g. Work)";
+"已存在同名分类" = "A category with this name already exists";
+
+/* App picker */
+"添加 App" = "Add Apps";
+"搜索应用名称…" = "Search apps…";
+"正在扫描已安装应用…" = "Scanning installed apps…";
+"共 %lld 个已安装应用" = "%lld installed apps found";
+"已选 %lld 个应用" = "%lld apps selected";
+"没有匹配的应用" = "No matching apps";
+"添加" = "Add";
+"已添加" = "Added";
+"添加应用到「%@」" = "Add apps to “%@”";
+"选择「%@」的新位置" = "Choose the new location of “%@”";
+
+/* Config sheet */
+"封面与弹窗 · %@" = "Cover & Popup · %@";
+"瓦片外观与点击瓦片后的弹窗，一处配置、实时预览" = "Tile look and its popup, configured together with live preview";
+"实时预览" = "Live Preview";
+"瓦片外观 = 封面设置 · 弹窗外观 = 弹窗设置" = "Tile = cover settings · Popup = popup settings";
+"封面样式 · 瓦片外观" = "Cover Style · Tile";
+"Dock 弹窗 · 点击瓦片后" = "Dock Popup · On Click";
+"恢复默认" = "Reset";
+"取消" = "Cancel";
+"应用" = "Apply";
+"应用设置" = "Apply Settings";
+"「应用」会更新封面图标并写入 Dock 参数（重启 Dock 约 1 秒）" = "Apply regenerates the cover icon and writes Dock parameters (Dock restarts for ~1s)";
+"「%@」的设置已应用，请点击 Dock 中的分类图标查看效果。" = "Settings applied to “%@”. Click its icon in the Dock to see the result.";
+"「%@」尚未固定到 Dock，设置已保存，下次固定时自动生效。" = "“%@” is not pinned to the Dock yet. Settings saved and will apply on next pin.";
+"「%@」应用失败：%@" = "Failed to apply to “%@”: %@";
+
+/* Cover style */
+"玻璃白" = "Glass Light";
+"玻璃深" = "Glass Dark";
+"纯色" = "Solid";
+"渐变" = "Gradient";
+"图片" = "Image";
+"渐变 · 顶部" = "Gradient · Top";
+"渐变 · 底部" = "Gradient · Bottom";
+"纯色 · 点选颜色" = "Solid · pick a color";
+"图标布局" = "Icon Layout";
+"自动" = "Auto";
+"圆角" = "Corner Radius";
+"图标间距" = "Icon Spacing";
+"图标占格" = "Icon Scale";
+"显示应用数量角标" = "Show app count badge";
+"右下角显示应用总数" = "Total app count at bottom-right";
+"选择图片…" = "Choose Image…";
+"选择封面图片…" = "Choose a cover image…";
+"已载入预览" = "Preview loaded";
+"图片上叠加应用小图标" = "Overlay mini app icons";
+"拖入图片自动圆角裁切" = "Auto rounded-crop on drop";
+
+/* Popup prefs */
+"瓦片显示为" = "Tile shows as";
+"文件夹" = "Folder";
+"堆叠" = "Stack";
+"扇形" = "Fan";
+"网格" = "Grid";
+"列表" = "List";
+"按名称" = "By Name";
+"按我的排序" = "By My Order";
+"按种类" = "By Kind";
+"系统默认，字母 / 拼音排序" = "System default, alphabetical";
+"使用管理器中的拖动顺序，应用后自动重建" = "Uses your drag order in the manager; links rebuild on apply";
+"系统按文件类型分组排序" = "Grouped by file type";
+"跟随系统默认大小" = "Follow system default size";
+"由 macOS 决定弹窗尺寸，实测最紧凑（推荐）" = "macOS decides popup size — most compact (recommended)";
+"网格图标大小" = "Grid icon size";
+"数值越大弹窗越大，调小更紧凑" = "Larger values enlarge the popup";
+"排序 · %@" = "Sort · %@";
+
+/* Settings window */
+"外观" = "Appearance";
+"强调色" = "Accent Color";
+"多彩 · 跟随系统" = "Multicolor · Follow System";
+"蓝" = "Blue";
+"紫" = "Purple";
+"粉红" = "Pink";
+"橙" = "Orange";
+"黄" = "Yellow";
+"绿" = "Green";
+"石墨" = "Graphite";
+"应用于按钮与选中态" = "Applies to buttons and selection";
+"管理器界面" = "Manager Interface";
+"应用图标大小" = "App icon size";
+"侧栏显示数量徽章" = "Show count badge in sidebar";
+"分类名右侧显示应用个数" = "App count next to category name";
+
+/* Pin alerts */
+"打开文件夹手动拖入" = "Open Folder to Drag Manually";
+"好" = "OK";
+"「%@」已固定到 Dock，请点击 Dock 中的分类图标试用。\n若图标只显示单个应用，请右键该图标 → 显示为 → 文件夹。" = "“%@” pinned to the Dock. Click its icon to try it.\nIf it shows only one app, right-click the icon → Display As → Folder.";
+"「%@」固定失败：%@\n可打开 MiniDock 文件夹，把分类文件夹拖到 Dock 分隔线右侧（拖入后右键图标 → 显示为 → 文件夹）。" = "Failed to pin “%@”: %@\nOpen the MiniDock folder and drag the category to the right of the Dock divider (then right-click → Display As → Folder).";
+
+/* Delete confirm */
+"删除分类" = "Delete Category";
+"删除「%@」" = "Delete “%@”";
+"仅删除 Dock 分类文件夹及其中的链接，不会卸载或删除任何真实 App。" = "Only the Dock category folder and its links are removed. No real apps are deleted.";
+
+/* Drop overlay */
+"松手添加到「%@」" = "Drop to add to “%@”";
+
+/* Guide */
+"欢迎使用 MiniDock" = "Welcome to MiniDock";
+"三步，把常用 App 按分类装进 Dock" = "Three steps to group your apps into the Dock";
+"1 · 建立分类" = "1 · Create a Category";
+"新建分类并命名\n从列表勾选常用 App" = "Create and name a category,\nthen pick apps from the list";
+"2 · 放进 Dock" = "2 · Put It in the Dock";
+"一键固定到 Dock\n或拖入 Dock 分隔线右侧" = "Pin with one click, or drag it\nto the right of the Dock divider";
+"3 · 点击使用" = "3 · Click to Use";
+"点分类图标弹出网格\n再点任意图标即刻启动" = "Click the tile to open the grid,\nthen click any icon to launch";
+"跳过" = "Skip";
+"开始使用" = "Get Started";
+"关闭" = "Close";
