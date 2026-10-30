@@ -92,11 +92,6 @@ docs/pitfalls.md               # macOS 26 踩坑记录（工具栏材质/资源�
 - 删除分类仅删除其文件夹与链接
 - Dock 参数只写入 `persistent-others` 的瓦片键（displayas/showas/arrangement/preferreditemsize）
 
-## 路线图
-
-开源版将保持免费全功能。更强大的**官网增强版**（MAS 免费版引流 + 官网付费版）规划见
-[docs/roadmap-website-edition.md](docs/roadmap-website-edition.md)。
-
 ## 许可
 
 [MIT](LICENSE) · 更新日志见 [CHANGELOG.md](CHANGELOG.md)

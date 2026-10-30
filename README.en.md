@@ -107,12 +107,6 @@ docs/pitfalls.md               # macOS 26 pitfalls log (toolbar material, resour
 - Dock parameters are written only to the tile keys of `persistent-others`
   (displayas / showas / arrangement / preferreditemsize)
 
-## Roadmap
-
-The open-source edition stays free with full features. A more powerful
-**Website Edition** (free MAS version as funnel + paid website version) is planned in
-[docs/roadmap-website-edition.md](docs/roadmap-website-edition.md).
-
 ## License
 
 [MIT](LICENSE) · See [CHANGELOG.md](CHANGELOG.md) for release history.
