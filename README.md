@@ -14,6 +14,9 @@
 
 ![封面与弹窗设置面板](screenshots/settings-zh.png)
 
+
+![Dock展示效果](screenshots/image.png)
+
 ## 功能特性
 
 - **分类管理**：新建/重命名/删除分类，从已安装应用搜索勾选添加，或直接拖 `.app` 进窗口，拖动排序

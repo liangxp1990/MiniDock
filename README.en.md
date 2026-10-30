@@ -17,6 +17,9 @@ English | [中文](README.md)
 
 ![Cover & Popup settings](screenshots/settings-zh.png)
 
+![Dock展示效果](screenshots/image.png)
+
+
 ## Features
 
 - **Category management**: create / rename / delete categories, pick apps from a searchable
