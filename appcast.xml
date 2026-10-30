@@ -5,15 +5,15 @@
         <link>https://raw.githubusercontent.com/liangxp1990/MiniDock/main/appcast.xml</link>
         <description>MiniDock 更新日志</description>
         <item>
-            <title>MiniDock 2.2</title>
-            <sparkle:version>2.2</sparkle:version>
-            <sparkle:shortVersionString>2.2</sparkle:shortVersionString>
+            <title>MiniDock 2.3</title>
+            <sparkle:version>2.3</sparkle:version>
+            <sparkle:shortVersionString>2.3</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-            <pubDate>Fri, 30 Oct 2026 09:07:14 +0000</pubDate>
+            <pubDate>Fri, 30 Oct 2026 09:11:05 +0000</pubDate>
             <enclosure
-                url="https://github.com/liangxp1990/MiniDock/releases/download/v2.2/MiniDock-2.2.dmg"
-                sparkle:edSignature="BPVRKXZoWS+w2hw+SaBK9OSz/+zu6WikDkr5Cn2Y7gOUTVFd7F09sqB04mzV8K+SqEMxXlceBVy3JZAAHnnWBQ=="
-                length="1980203"
+                url="https://github.com/liangxp1990/MiniDock/releases/download/v2.3/MiniDock-2.3.dmg"
+                sparkle:edSignature="ZXbYUBOjXQBC0fZoJM/yetcDqMlfcyFUEz/0LwTG0JH7/lLLHkvHfTGzrmRBcRgdZwW63fNf6QszBz3FbHcICQ=="
+                length="1980261"
                 type="application/octet-stream"/>
         </item>
     </channel>
