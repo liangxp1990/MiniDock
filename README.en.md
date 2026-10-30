@@ -11,6 +11,12 @@ English | [中文](README.md)
 **Free and open source** (MIT). Every feature is unrestricted, and the UI supports
 **English / 简体中文** (follows your system language).
 
+![Main window](screenshots/main-en.png)
+
+![Mosaic category tiles in the Dock](screenshots/dock-tiles.png)
+
+![Cover & Popup settings](screenshots/settings-zh.png)
+
 ## Features
 
 - **Category management**: create / rename / delete categories, pick apps from a searchable

@@ -8,6 +8,12 @@
 
 **免费开源**（MIT），所有功能无限制，界面支持**简体中文 / English** 双语言（跟随系统语言）。
 
+![主窗口](screenshots/main-zh.png)
+
+![Dock 中的马赛克分类瓦片](screenshots/dock-tiles.png)
+
+![封面与弹窗设置面板](screenshots/settings-zh.png)
+
 ## 功能特性
 
 - **分类管理**：新建/重命名/删除分类，从已安装应用搜索勾选添加，或直接拖 `.app` 进窗口，拖动排序
