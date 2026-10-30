@@ -1,0 +1,91 @@
+name: Release
+
+# push tag（v开头）自动发版：构建 DMG → Sparkle EdDSA 签名 → appcast 入库 → Release
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: macos-15
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 安装 Sparkle 签名工具
+        run: |
+          if ! command -v sign_update >/dev/null 2>&1; then
+            curl -sL --retry 3 -o /tmp/sparkle.tar.xz \
+              "https://github.com/sparkle-project/Sparkle/releases/download/2.10.1/Sparkle-2.10.1.tar.xz"
+            mkdir -p /tmp/sparkle-x
+            tar xf /tmp/sparkle.tar.xz -C /tmp/sparkle-x --exclude="*.dSYM" 2>/dev/null || true
+            test -x /tmp/sparkle-x/bin/sign_update
+            echo "/tmp/sparkle-x/bin" >> "$GITHUB_PATH"
+          fi
+
+      - name: 提取版本号
+        id: ver
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: 构建 DMG
+        run: |
+          swift build -c release
+          ./Scripts/make-dmg.sh "${{ steps.ver.outputs.version }}"
+
+      - name: EdDSA 签名 + 生成 appcast
+        env:
+          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
+        run: |
+          V="${{ steps.ver.outputs.version }}"
+          TAG="${GITHUB_REF_NAME}"
+          DMG="build/MiniDock-${V}.dmg"
+          # 私钥注入临时文件（sign_update -f 指定私钥文件，无需钥匙串）
+          printf '%s' "$SPARKLE_PRIVATE_KEY" > /tmp/ed.key
+          chmod 600 /tmp/ed.key
+          SIG=$(sign_update -f /tmp/ed.key "$DMG" | sed -E 's/^sparkle:edSignature="([^"]+)".*$/\1/')
+          rm -f /tmp/ed.key
+          test -n "$SIG"
+          SIZE=$(stat -f %z "$DMG")
+          DATE=$(date -u +"%a, %d %b %Y %H:%M:%S +0000")
+          cat > appcast.xml <<XML
+          <?xml version="1.0" standalone="yes"?>
+          <rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+              <channel>
+                  <title>MiniDock</title>
+                  <link>https://raw.githubusercontent.com/liangxp1990/MiniDock/main/appcast.xml</link>
+                  <description>MiniDock 更新日志</description>
+                  <item>
+                      <title>MiniDock ${V}</title>
+                      <sparkle:version>${V}</sparkle:version>
+                      <sparkle:shortVersionString>${V}</sparkle:shortVersionString>
+                      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+                      <pubDate>${DATE}</pubDate>
+                      <enclosure
+                          url="https://github.com/liangxp1990/MiniDock/releases/download/${TAG}/MiniDock-${V}.dmg"
+                          sparkle:edSignature="${SIG}"
+                          length="${SIZE}"
+                          type="application/octet-stream"/>
+                  </item>
+              </channel>
+          </rss>
+          XML
+
+      - name: appcast 入库
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add appcast.xml
+          git commit -m "release: appcast ${GITHUB_REF_NAME}" || exit 0
+          git push origin HEAD:main
+
+      - name: 创建 GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" \
+            "build/MiniDock-${{ steps.ver.outputs.version }}.dmg" \
+            --title "MiniDock ${GITHUB_REF_NAME}" \
+            --generate-notes
