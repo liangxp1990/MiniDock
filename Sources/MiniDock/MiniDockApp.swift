@@ -11,6 +11,7 @@ final class MainWindowOpener {
 struct MiniDockApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @State private var appState = AppState()
+    @State private var updaterController = UpdaterController()
 
     var body: some Scene {
         WindowGroup("MiniDock", id: "main") {
@@ -18,6 +19,11 @@ struct MiniDockApp: App {
                 .environment(appState)
         }
         .windowResizability(.contentMinSize)
+        .commands {
+            CommandGroup(after: .appInfo) {
+                CheckForUpdatesView(updater: updaterController.updater)
+            }
+        }
 
         Settings {
             SettingsView()
@@ -47,5 +53,23 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             }
         }
         return true
+    }
+}
+
+
+/// Sparkle 的 SwiftUI 菜单项包装（官方推荐：避免菜单禁用态问题）
+import Sparkle
+struct CheckForUpdatesView: View {
+    private let updater: SPUUpdater
+
+    init(updater: SPUUpdater) {
+        self.updater = updater
+    }
+
+    var body: some View {
+        Button("检查更新…") {
+            updater.checkForUpdates()
+        }
+        .keyboardShortcut("u", modifiers: [.command])
     }
 }

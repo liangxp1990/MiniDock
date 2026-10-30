@@ -67,11 +67,39 @@ cat > "$APP_ROOT/Contents/Info.plist" <<PLIST
     <string>public.app-category.utilities</string>
     <key>LSMinimumSystemVersion</key>
     <string>14.0</string>
+    <key>SUFeedURL</key>
+    <string>https://raw.githubusercontent.com/liangxp1990/MiniDock/main/appcast.xml</string>
+    <key>SUPublicEDKey</key>
+    <string>nYGDcQ/FlUHpDblgQYbRLbPN3e30/KF6d/uoaCPuJSU=</string>
+    <key>SUEnableInstallerLauncherService</key>
+    <true/>
     <key>NSHighResolutionCapable</key>
     <true/>
 </dict>
 </plist>
 PLIST
+
+echo "==> Sparkle 框架"
+SPARKLE_FW="$APP_ROOT/Contents/Frameworks/Sparkle.framework"
+SPARKLE_BIN="$BIN_DIR/Sparkle.framework"
+if [ -d "$SPARKLE_BIN/Versions/B" ]; then
+    mkdir -p "$SPARKLE_FW/Versions"
+    cp -R "$SPARKLE_BIN/Versions/B" "$SPARKLE_FW/Versions/B"
+    # 头文件/模块目录会让 ad-hoc 签名失败，剔除（运行不需要）
+    rm -rf "$SPARKLE_FW/Versions/B/Headers" \
+           "$SPARKLE_FW/Versions/B/PrivateHeaders" \
+           "$SPARKLE_FW/Versions/B/Modules" \
+           "$SPARKLE_FW/Versions/B/_CodeSignature"
+    # 标准 framework 结构：顶层 symlink 指向当前版本
+    ln -sf "Versions/B/Sparkle" "$SPARKLE_FW/Sparkle"
+    ln -sf "Versions/B/Resources" "$SPARKLE_FW/Resources"
+    ln -sf "B" "$SPARKLE_FW/Versions/Current"
+    # 主二进制缺 @executable_path rpath，补两条（已有则忽略）
+    install_name_tool -add_rpath "@executable_path/../Frameworks" \
+        "$APP_ROOT/Contents/MacOS/$APP_NAME" 2>/dev/null || true
+    install_name_tool -add_rpath "@executable_path" \
+        "$APP_ROOT/Contents/MacOS/$APP_NAME" 2>/dev/null || true
+fi
 
 echo "==> 本地化资源（SwiftUI 从 Bundle.main 查找，SPM 的资源 bundle 需并入）"
 if [ -d "$BIN_DIR/${APP_NAME}_${APP_NAME}.bundle/Contents/Resources" ]; then
@@ -81,7 +109,7 @@ if [ -d "$BIN_DIR/${APP_NAME}_${APP_NAME}.bundle/Contents/Resources" ]; then
 fi
 
 echo "==> ad-hoc 签名"
-codesign --force --sign - "$APP_ROOT"
+codesign --force --deep --sign - "$APP_ROOT"
 
 echo ""
 echo "✅ 完成: $APP_ROOT"
