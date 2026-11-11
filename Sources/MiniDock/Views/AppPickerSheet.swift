@@ -134,10 +134,7 @@ struct AppPickerSheet: View {
     private func load() async {
         let bundlePath = Bundle.main.bundleURL.path
         let excluding: Set<String> = bundlePath.hasSuffix(".app") ? [bundlePath] : []
-        let result = await Task.detached(priority: .userInitiated) {
-            AppScanner.scan(excludingPaths: excluding)
-        }.value
-        apps = result
+        apps = await AppScanner.scanAll(excludingPaths: excluding)
         loading = false
     }
 

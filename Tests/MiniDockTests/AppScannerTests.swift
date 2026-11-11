@@ -47,6 +47,60 @@ final class AppScannerTests: XCTestCase {
         XCTAssertTrue(names.contains("Second"), "无 Info.plist 时回退到文件名")
     }
 
+    func testScanFollowsSymlinkedApps() throws {
+        // 模拟企业软件安装方式：实体在搜索根之外（如 /Library/sangfor/SDP），搜索根内只放符号链接
+        let outsideRoot = FileManager.default.temporaryDirectory
+            .appendingPathComponent("minidock-scan-out-" + UUID().uuidString, isDirectory: true)
+        try FileManager.default.createDirectory(at: outsideRoot, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: outsideRoot) }
+
+        let realBundle = outsideRoot.appendingPathComponent("aTrust.app", isDirectory: true)
+        try FileManager.default.createDirectory(
+            at: realBundle.appendingPathComponent("Contents", isDirectory: true),
+            withIntermediateDirectories: true
+        )
+        NSDictionary(dictionary: ["CFBundleIdentifier": "com.electron.atrust", "CFBundleDisplayName": "aTrust"])
+            .write(to: realBundle.appendingPathComponent("Contents/Info.plist"), atomically: true)
+
+        let linkURL = root.appendingPathComponent("aTrust.app")
+        try FileManager.default.createSymbolicLink(at: linkURL, withDestinationURL: realBundle)
+
+        let results = AppScanner.scan(searchRoots: [root])
+        guard let found = results.first(where: { $0.id == "com.electron.atrust" }) else {
+            return XCTFail("符号链接指向的 .app 应能被扫描到")
+        }
+        XCTAssertEqual(found.name, "aTrust")
+        // /var 与 /private/var 前缀在不同 API 下标准化结果不同，比较结尾路径即可
+        XCTAssertTrue(found.path.hasSuffix("/aTrust.app"), "found.path=\(found.path)")
+    }
+
+    func testIsEligiblePathAlignsWithAppCenter() {
+        // 正常应用位置放行
+        XCTAssertTrue(AppScanner.isEligiblePath("/Applications/WeChat.app"))
+        XCTAssertTrue(AppScanner.isEligiblePath("/Library/sangfor/SDP/aTrust.app"))
+        XCTAssertTrue(AppScanner.isEligiblePath("/System/Library/CoreServices/Applications/Archive Utility.app"))
+        // 系统内部组件 / 开发产物 / 内嵌 bundle / 挂载卷拒收
+        XCTAssertFalse(AppScanner.isEligiblePath("/System/Library/CoreServices/Finder.app"))
+        XCTAssertFalse(AppScanner.isEligiblePath("/System/Library/CoreServices/ScreenSaverEngine.app"))
+        XCTAssertFalse(AppScanner.isEligiblePath("/System/Library/CoreServices/Finder.app/Contents/Applications/AirDrop.app"))
+        XCTAssertFalse(AppScanner.isEligiblePath("/System/Library/PrivateFrameworks/PlatformSSO.framework/Support/PlatformSSOUIAgent.app"))
+        XCTAssertFalse(AppScanner.isEligiblePath("/Users/dev/Library/Developer/CoreSimulator/Devices/x/data/Containers/Bundle/app/Fake.app"))
+        XCTAssertFalse(AppScanner.isEligiblePath("/private/var/folders/ab/Trash.app"))
+        XCTAssertFalse(AppScanner.isEligiblePath("/Volumes/InstallESD/i4Tools.app"))
+    }
+
+    func testAppInfoSkipsHiddenAgents() throws {
+        _ = try makeBundle("Agent.app", plist: [
+            "CFBundleIdentifier": "com.fake.agent",
+            "LSUIElement": true,
+        ])
+        _ = try makeBundle("Normal.app", plist: ["CFBundleIdentifier": "com.fake.normal"])
+
+        let results = AppScanner.scan(searchRoots: [root])
+        XCTAssertFalse(results.contains { $0.id == "com.fake.agent" }, "LSUIElement 后台 agent 不应出现")
+        XCTAssertTrue(results.contains { $0.id == "com.fake.normal" })
+    }
+
     func testScanExcludesPaths() throws {
         let app = try makeBundle("Excluded.app")
         let results = AppScanner.scan(searchRoots: [root], excludingPaths: [app.path])

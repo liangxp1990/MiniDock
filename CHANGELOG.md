@@ -1,5 +1,11 @@
 # 更新日志 Changelog
 
+## v2.4 变更
+
+- **「添加应用」对齐应用中心可见范围**：应用列表数据源改为 Spotlight/LaunchServices 索引（mdfind 查询应用 bundle）∪ 固定目录扫描兜底——任意安装位置的应用（如 aTrust 实体在 `/Library/sangfor/SDP`、Safari 在系统 Cryptex）现在都能找到并分组
+- **修复符号链接应用被漏扫**：`/Applications` 中指向目录的符号链接（企业软件常见安装方式）此前被 `hasDirectoryPath` 的 lstat 语义误过滤，改用跟随链接的目录判断
+- **可见性过滤对齐应用中心**：剔除 Finder 内嵌假 App（AirDrop 等）、系统后台 Agent（`LSUIElement`/`LSBackgroundOnly`）、PrivateFrameworks 壳、Xcode 模拟器产物、失效挂载卷；放行 `CoreServices/Applications` 内的系统工具（归档实用工具等）
+
 ## v2.0（开源版）
 
 - **开源发布**（MIT）：移除全部 Pro 标记与限制，所有功能免费
